@@ -1,0 +1,100 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+}
+
+#stage {
+  position: fixed;
+  inset: 0;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+}
+#stage.top { align-items: flex-start; }
+
+#screen {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background: #000;
+  touch-action: none;
+}
+
+/* ---- touch controls and settings (src/input/touch.js) ---- */
+:root {
+  --sat-t: env(safe-area-inset-top, 0px);
+  --sat-r: env(safe-area-inset-right, 0px);
+  --sat-b: env(safe-area-inset-bottom, 0px);
+  --sat-l: env(safe-area-inset-left, 0px);
+  --green: #28ff3c;
+  --red: #ff2828;
+}
+#touch { position: absolute; inset: 0; pointer-events: auto; --tc-opacity: 0.4; font-family: ui-monospace, Menlo, Consolas, monospace; }
+
+/* the left/right pad and the fire button */
+#touch .tc-pad, #touch .tc-fire {
+  position: absolute; box-sizing: border-box; pointer-events: none;
+  opacity: 0; transition: opacity 0.15s;
+  border: 3px solid var(--green); color: var(--green);
+  background: rgba(40, 255, 60, 0.08);
+}
+#touch.tc-visible .tc-pad, #touch.tc-visible .tc-fire { opacity: var(--tc-opacity); }
+#touch.tc-stick .tc-pad { transition: none; }
+#touch .tc-pad.tc-hidden { opacity: 0; }
+#touch .tc-pad { border-radius: 999px; }
+#touch .tc-arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 1.3em; text-align: center; }
+#touch .tc-l { left: 12%; }
+#touch .tc-r { right: 12%; }
+#touch .tc-arrow.on { color: #fff; text-shadow: 0 0 0.3em var(--green); }
+#touch .tc-fire {
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; letter-spacing: 0.08em; border-color: var(--red); color: var(--red);
+  background: rgba(255, 40, 40, 0.1);
+}
+#touch .tc-fire.on { background: rgba(255, 40, 40, 0.5); color: #fff; }
+
+/* the settings button (a pixel cog) and the pause button */
+#touch .tc-gear, #touch .tc-pause {
+  position: absolute; top: calc(var(--sat-t) + 8px);
+  width: 40px; height: 40px; padding: 8px; border: 0; background: transparent; cursor: pointer;
+  opacity: 0.55;
+}
+#touch .tc-gear { right: calc(var(--sat-r) + 8px); }
+#touch .tc-pause { right: calc(var(--sat-r) + 52px); display: none; }
+#touch.tc-playing .tc-pause { display: block; }
+#touch .tc-gear:hover, #touch .tc-gear:active, #touch .tc-pause:hover, #touch .tc-pause:active { opacity: 1; }
+#touch .tc-gear svg, #touch .tc-pause svg { width: 100%; height: 100%; fill: var(--green); display: block; }
+
+/* the panels, in the cabinet's colours */
+#touch .tc-panel {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  background: #000; color: #fff; border: 3px solid var(--green); border-radius: 4px;
+  padding: 14px 18px; min-width: 290px; max-width: 90vw; max-height: 88vh; overflow: auto;
+  font-size: 15px; text-transform: uppercase; letter-spacing: 0.04em;
+  display: flex; flex-direction: column; gap: 10px;
+}
+#touch .tc-panel[hidden] { display: none; }
+#touch .tc-panel h2, #touch .tc-panel h3 { margin: 0; color: var(--green); font-size: 17px; }
+#touch .tc-panel h3 { margin-top: 6px; font-size: 14px; color: var(--red); }
+#touch .tc-panel label { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+#touch .tc-panel label:has(input[type=checkbox]) { justify-content: flex-start; }
+#touch .tc-panel select, #touch .tc-panel input[type=range] { flex: 1; max-width: 60%; font: inherit; text-transform: none; background: #000; color: #fff; border: 2px solid var(--green); }
+#touch .tc-panel input[type=checkbox] { accent-color: var(--green); width: 20px; height: 20px; }
+#touch .tc-panel button { font: inherit; text-transform: uppercase; padding: 9px 18px; border-radius: 0; border: 2px solid var(--green); background: #000; color: var(--green); cursor: pointer; }
+#touch .tc-panel button:active { background: var(--green); color: #000; }
+#touch .tc-panel .tc-close { align-self: flex-end; background: var(--green); color: #000; }
+#touch .tc-panel .tc-note { margin: 0; font-size: 12px; color: #aaa; text-transform: none; letter-spacing: 0; }
+#touch .tc-menu { min-width: 220px; align-items: stretch; text-align: center; }
+#touch .tc-menu h2 { font-size: 22px; letter-spacing: 0.2em; }
+#touch .tc-menu button { font-size: 17px; padding: 12px 18px; }
+#touch .tc-menu .tc-resume { background: var(--green); color: #000; }

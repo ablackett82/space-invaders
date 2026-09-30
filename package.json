@@ -1,0 +1,13 @@
+{
+  "name": "space-invaders-arcade",
+  "version": "0.1.0",
+  "description": "Browser reimplementation of the 1978 arcade game Space Invaders",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "rom": "node tools/buildrom.mjs && node tools/extract.mjs",
+    "dev": "node tools/serve.js",
+    "test": "node --test test/*.test.js"
+  },
+  "license": "UNLICENSED"
+}
