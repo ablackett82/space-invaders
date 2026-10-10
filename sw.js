@@ -1,9 +1,9 @@
 // Service worker: caches the whole app on install so it launches offline.
 // Bump VERSION whenever any file changes, so clients pick up the new build.
-const VERSION = 'v1';
+const VERSION = 'v2';
 const CACHE = `invaders-${VERSION}`;
 const FILES = [
-  './', 'index.html', 'style.css', 'manifest.webmanifest', 'data/tables.json',
+  './', 'index.html', 'moved.js', 'style.css', 'manifest.webmanifest', 'data/tables.json',
   'src/main.js',
   'src/game/machine.js', 'src/game/draw.js', 'src/game/isr.js', 'src/game/flow.js',
   'src/render/screen.js', 'src/render/audio.js',
@@ -16,7 +16,7 @@ self.addEventListener('install', (e) => {
 });
 
 self.addEventListener('activate', (e) => {
-  e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
+  e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k.startsWith(CACHE.slice(0, -VERSION.length)) && k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
 });
 
 // cache first, falling back to the network (and caching what it returns)

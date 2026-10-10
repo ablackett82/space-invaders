@@ -23,5 +23,6 @@
   <script type="module" src="src/main.js"></script>
   <script>// offline cache; skipped on localhost so the dev server always serves fresh files
     if ('serviceWorker' in navigator && location.hostname !== 'localhost') addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));</script>
+  <script src="moved.js" data-prefix="invaders." data-name="Space Invaders"></script>
 </body>
 </html>
